@@ -7,6 +7,7 @@ import com.booking.app.Booking.App.model.BookedRoom;
 import com.booking.app.Booking.App.model.Room;
 import com.booking.app.Booking.App.repository.BookingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingService implements IBookingService {
 
+    @Autowired
     private final BookingRepository bookingRepository;
     private final RoomService roomService;
 
@@ -59,29 +61,6 @@ public class BookingService implements IBookingService {
         return bookingRepository.findByBookingConfirmationCode(confirmCode)
                 .orElseThrow(() -> new ResourceNotFoundException("No booking found with booking code : " + confirmCode));
     }
-
-
-//    private boolean roomIsVailable(BookedRoom bookingRequest, List<BookedRoom> existingBookings) {
-//        return existingBookings.stream()
-//                .noneMatch(existingBooking ->
-//                        bookingRequest.getCheckInDate().equals(existingBooking.getCheckInDate())
-//                                || bookingRequest.getCheckOutDate().isBefore(existingBooking.getCheckOutDate())
-//                                || (bookingRequest.getCheckInDate().isAfter(existingBooking.getCheckInDate())
-//                                && bookingRequest.getCheckInDate().isBefore(existingBooking.getCheckOutDate()))
-//                                || (bookingRequest.getCheckInDate().isBefore(existingBooking.getCheckInDate())
-//
-//                                && bookingRequest.getCheckOutDate().equals(existingBooking.getCheckOutDate()))
-//                                || (bookingRequest.getCheckInDate().isBefore(existingBooking.getCheckInDate())
-//
-//                                && bookingRequest.getCheckOutDate().isAfter(existingBooking.getCheckOutDate()))
-//
-//                                || (bookingRequest.getCheckInDate().equals(existingBooking.getCheckOutDate())
-//                                && bookingRequest.getCheckOutDate().equals(existingBooking.getCheckInDate()))
-//
-//                                || (bookingRequest.getCheckInDate().equals(existingBooking.getCheckOutDate())
-//                                && bookingRequest.getCheckOutDate().equals(bookingRequest.getCheckInDate()))
-//                );
-//    }
 
     private boolean roomIsAvailable(BookedRoom bookingRequest, List<BookedRoom> existingBookings) {
         return existingBookings.stream()

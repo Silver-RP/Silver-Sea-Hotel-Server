@@ -37,7 +37,7 @@ public class BookingController {
         return ResponseEntity.ok(responses);
     }
 
-    @PostMapping("/confirm/{confirmCode}")
+    @GetMapping("/confirm/{confirmCode}")
     public ResponseEntity<?> getBookingByConfirmationCode(@PathVariable("confirmCode") String confirmCode) {
         try {
             BookedRoom booking = bookingService.findByBookingConfirmationCode(confirmCode);
@@ -60,9 +60,11 @@ public class BookingController {
         }
     }
 
+
+
     @DeleteMapping("/booking/{bookingId}/delete")
-    public void cancelBooking(@PathVariable Long id) {
-        bookingService.cancelBooking(id);
+    public void cancelBooking(@PathVariable Long bookingId) {
+        bookingService.cancelBooking(bookingId);
     }
 
     private BookingResponse getBookingResponse(BookedRoom booking) {
@@ -70,9 +72,9 @@ public class BookingController {
         RoomResponse roomResponse = new RoomResponse(theRoom.getId(), theRoom.getRoomType(), theRoom.getRoomPrice());
         return new BookingResponse(
                 booking.getBookingId(), booking.getCheckInDate(),
-                booking.getCheckOutDate(), booking.getBookingConfirmationCode(),
+                booking.getCheckOutDate(), booking.getGuestFullName(),
                 booking.getGuestEmail(), booking.getNumOfAdults(),
-                booking.getNumOfChildren(), booking.getNumOfAdults(),
+                booking.getNumOfChildren(), booking.getTotalNumOfGuest(),
                 booking.getBookingConfirmationCode(), roomResponse);
     }
 
